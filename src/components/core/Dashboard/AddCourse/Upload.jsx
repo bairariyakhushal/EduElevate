@@ -5,9 +5,8 @@ import { useDropzone } from "react-dropzone"
 // Upload icon for empty state UI
 import { FiUploadCloud } from "react-icons/fi"
 
-// Video player styles and component for video preview
-import "video-react/dist/video-react.css"
-import { Player } from "video-react"
+// Video player component for video preview - migrated to ReactPlayer
+import ReactPlayer from 'react-player';
 
 // Generic Upload component for image/video with drag & drop + preview
 export default function Upload({
@@ -93,7 +92,26 @@ export default function Upload({
                 className="h-full w-full rounded-md object-cover"
               />
             ) : (
-              <Player aspectRatio="16:9" playsInline src={previewSource} />
+              <div className="w-full" style={{ aspectRatio: '16/9' }}>
+                <ReactPlayer
+                  url={previewSource}
+                  width="100%"
+                  height="100%"
+                  controls={true}
+                  config={{
+                    file: {
+                      attributes: {
+                        playsInline: true,
+                        style: { width: '100%', height: '100%' }
+                      }
+                    }
+                  }}
+                  style={{
+                    borderRadius: '8px',
+                    overflow: 'hidden'
+                  }}
+                />
+              </div>
             )}
             {/* Allow clearing selection only in editable mode */}
             {!viewData && (
