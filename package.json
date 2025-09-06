@@ -42,8 +42,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm ci --legacy-peer-deps && npm run build:next",
-    "build:next": "next build",
+    "build": "react-scripts build",
     "install-deps": "npm install --legacy-peer-deps",
     "eject": "react-scripts eject",
     "server": "cd server && npm run dev",
