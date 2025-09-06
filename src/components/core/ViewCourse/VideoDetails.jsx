@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-
-import "video-react/dist/video-react.css"
+import ReactPlayer from 'react-player';
 import { useLocation } from "react-router-dom"
-import { BigPlayButton, Player } from "video-react"
 
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI"
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice"
@@ -35,14 +33,16 @@ const VideoDetails = () => {
   const { token } = useSelector((state) => state.auth)
   
   // Get course data from Redux store
-const { courseSectionData, courseEntireData, completedLectures } =
-  useSelector((state) => state.viewCourse || {})
+  const { courseSectionData, courseEntireData, completedLectures } =
+    useSelector((state) => state.viewCourse || {})
 
   // Local component state
   const [videoData, setVideoData] = useState([])        // Current video information
   const [previewSource, setPreviewSource] = useState("") // Thumbnail/preview image
   const [videoEnded, setVideoEnded] = useState(false)    // Track if video has ended
   const [loading, setLoading] = useState(false)          // Loading state for async operations
+  const [playing, setPlaying] = useState(false)          // Control video playback state
+  const [played, setPlayed] = useState(0)               // Track video progress
 
   /**
    * Effect to load video data when URL parameters change
@@ -79,6 +79,8 @@ const { courseSectionData, courseEntireData, completedLectures } =
         setVideoData(filteredVideoData?.[0]);
         setPreviewSource(courseEntireData?.thumbnail);
         setVideoEnded(false); // Reset video ended state when switching videos
+        setPlaying(false);    // Reset playing state
+        setPlayed(0);         // Reset progress
       }
     })()
   }, [courseSectionData, courseEntireData, location.pathname, courseId, sectionId, subSectionId, navigate])
@@ -248,25 +250,41 @@ const { courseSectionData, courseEntireData, completedLectures } =
           className="h-full w-full rounded-md object-cover"
         />
       ) : (
-        // Main video player with controls and overlay
-        <Player
-          ref={playerRef}
-          aspectRatio="16:9"
-          playsInline
-          onEnded={() => setVideoEnded(true)} // Trigger overlay when video ends
-          src={videoData?.videoUrl}
-        >
-          {/* Large play button in center of video */}
-          <BigPlayButton position="center" />
+        // Main video player with controls and overlay - ReactPlayer Implementation
+        <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
+          <ReactPlayer
+            ref={playerRef}
+            url={videoData?.videoUrl}
+            width="100%"
+            height="100%"
+            controls={true}
+            playing={playing}
+            onEnded={() => setVideoEnded(true)} // Trigger overlay when video ends
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onProgress={({ played }) => setPlayed(played)}
+            config={{
+              file: {
+                attributes: {
+                  playsInline: true,
+                  style: { width: '100%', height: '100%' }
+                }
+              }
+            }}
+            style={{
+              borderRadius: '8px',
+              overflow: 'hidden'
+            }}
+          />
           
           {/* Video End Overlay - Shows completion and navigation options */}
           {videoEnded && (
             <div
               style={{
                 backgroundImage:
-                  "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)", // Gradient overlay for readability
+                  "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1))", // Gradient overlay for readability
               }}
-              className="full absolute inset-0 z-[100] grid h-full place-content-center font-inter"
+              className="absolute inset-0 z-[100] grid h-full place-content-center font-inter"
             >
               {/* Mark as Complete button - only show if lecture not already completed */}
               {!completedLectures.includes(subSectionId) && (
@@ -284,11 +302,12 @@ const { courseSectionData, courseEntireData, completedLectures } =
                 onclick={() => {
                   if (playerRef?.current) {
                     // Reset video to beginning, hide overlay, and start autoplay
-                    playerRef?.current?.seek(0)
+                    playerRef.current.seekTo(0) // ReactPlayer uses seekTo instead of seek
                     setVideoEnded(false)
+                    setPlaying(true) // Set playing to true for autoplay
                     // Start playing the video automatically after seeking
                     setTimeout(() => {
-                      playerRef?.current?.play()
+                      setPlaying(true)
                     }, 100) // Small delay to ensure seek completes
                   }
                 }}
@@ -322,7 +341,7 @@ const { courseSectionData, courseEntireData, completedLectures } =
               </div>
             </div>
           )}
-        </Player>
+        </div>
       )}
 
       {/* Video Information Section */}
@@ -336,4 +355,3 @@ const { courseSectionData, courseEntireData, completedLectures } =
 }
 
 export default VideoDetails
-// video
