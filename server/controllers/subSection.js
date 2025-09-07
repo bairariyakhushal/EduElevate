@@ -24,6 +24,11 @@ exports.createSubsection = async (req, res) => {
 
         // Upload video to Cloudinary
         const uploadDetails = await uploadToCloudinary(videoFile, process.env.FOLDER_NAME);
+        console.log("Cloudinary upload details:", {
+            secure_url: uploadDetails.secure_url,
+            resource_type: uploadDetails.resource_type,
+            format: uploadDetails.format
+        });
         
         // Get video duration from Cloudinary response
         let videoDuration = timeDuration;
@@ -45,7 +50,9 @@ exports.createSubsection = async (req, res) => {
             timeDuration: videoDuration,
             videoUrl: uploadDetails.secure_url
         });
-
+        
+        console.log("Created new subsection with video URL:", newSubSection.videoUrl);
+        
         // Add subsection to section's subSection array
         const updatedSection = await Section.findByIdAndUpdate(
             { _id: sectionId },
