@@ -21,6 +21,8 @@ exports.updateCourseProgress = async (req, res) => {
       userId: userId,
     })
 
+    console.log("Debug for courseProgress...",courseProgress);
+    
     if (!courseProgress) {
       // If course progress doesn't exist, create a new one
       return res.status(404).json({
