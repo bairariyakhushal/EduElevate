@@ -355,11 +355,22 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
     }
     result = response?.data?.data
     console.log("Course detail Api me result..." , result)
+    
+    // Add detailed logging for video URLs
+    if (result?.courseDetails?.courseContent) {
+      console.log("Course content sections:", result.courseDetails.courseContent.length)
+      result.courseDetails.courseContent.forEach((section, i) => {
+        console.log(`Section ${i+1} subsections:`, section.subSection.length)
+        section.subSection.forEach((subsection, j) => {
+          console.log(`Video URL for section ${i+1}, subsection ${j+1}:`, subsection.videoUrl)
+        })
+      })
+    }
 
   } catch (error) {
     console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
-    result = error.response.data
-    toast.error(error.response.data.message);
+     result = error?.response?.data || null
+    toast.error(error?.response?.data?.message || error.message || "Failed to load course details");
   }
   toast.dismiss(toastId)
   return result
@@ -379,14 +390,14 @@ export const markLectureAsComplete = async (data, token) => {
       response
     )
 
-    if (!response.data.message) {
-      throw new Error(response.data.error)
+    if (!response.data.success) {
+      throw new Error(response?.data?.message )
     }
     toast.success("Lecture Completed")
     result = true
   } catch (error) {
     console.log("MARK_LECTURE_AS_COMPLETE_API API ERROR............", error)
-    toast.error(error.message)
+    toast.error(error?.response?.data?.message || error.message || "Failed to mark lecture complete")
     result = false
   }
   toast.dismiss(toastId)
