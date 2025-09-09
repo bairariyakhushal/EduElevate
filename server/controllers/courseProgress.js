@@ -3,6 +3,7 @@ const Section = require("../models/section")
 const SubSection = require("../models/subSection")
 const CourseProgress = require("../models/courseProgress")
 const Course = require("../models/course")
+
 exports.updateCourseProgress = async (req, res) => {
   const { courseId, subSectionId } = req.body
   const userId = req.user.id
@@ -17,23 +18,21 @@ exports.updateCourseProgress = async (req, res) => {
       })
     }
 
-    // Find the course progress document for the user and course
+    // ✅ Use courseId instead of courseID to match model
     let courseProgress = await CourseProgress.findOne({
-      courseID: courseId,
+      courseId: courseId,  // Changed from courseID
       userId: userId,
     })
 
     console.log("Debug for courseProgress...", courseProgress);
     
     if (!courseProgress) {
-      // ✅ CREATE course progress instead of returning 404
       try {
         courseProgress = await CourseProgress.create({
-          courseID: courseId,
+          courseId: courseId,        // Changed from courseID  
           userId: userId,
-          completedVideos: [subSectionId] // Add the current video as completed
+          completedVideos: [subSectionId]
         })
-        console.log("Created new course progress:", courseProgress)
         
         return res.status(200).json({ 
           success: true,
@@ -47,7 +46,6 @@ exports.updateCourseProgress = async (req, res) => {
         })
       }
     } else {
-      // If course progress exists, check if the subsection is already completed
       if (courseProgress.completedVideos.includes(subSectionId)) {
         return res.status(200).json({ 
           success: true,
@@ -55,10 +53,7 @@ exports.updateCourseProgress = async (req, res) => {
         })
       }
 
-      // Push the subsection into the completedVideos array
       courseProgress.completedVideos.push(subSectionId)
-      
-      // Save the updated course progress
       await courseProgress.save()
       
       return res.status(200).json({ 
