@@ -223,22 +223,21 @@ const VideoDetails = () => {
    * Handle marking a lecture as complete
    * Makes API call to update completion status and updates Redux store
    */
-  const handleLectureCompletion = async () => {
-    setLoading(true)
-    
-    // Make API call to mark lecture as complete
-    const res = await markLectureAsComplete(
-      { courseId: courseId, subSectionId: subSectionId }, // Changed from subsectionId to subSectionId
-      token
-    )
-    
-    // Update Redux store if API call successful
-    if (res) {
-      dispatch(updateCompletedLectures(subSectionId))
-    }
-    
-    setLoading(false)
+  // Line 172 mein ye change karo:
+const handleLectureCompletion = async () => {
+  setLoading(true)
+  
+  const res = await markLectureAsComplete(
+    { courseId: courseId, subSectionId: subSectionId }, // ✅ Consistent naming
+    token
+  )
+  
+  if (res) {
+    dispatch(updateCompletedLectures(subSectionId))
   }
+  
+  setLoading(false)
+}
 
   return (
     <div className="flex flex-col gap-5 text-white">
