@@ -5,7 +5,7 @@ const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailSender = require('../utils/mailSender');
-const  passwordUpdated = require('../mail/templates/passwordUpdate');
+const  {passwordUpdate} = require('../mail/templates/passwordUpdate');
 require("dotenv").config();
 
 /**
@@ -312,10 +312,10 @@ exports.changePassword = async (req, res) => {
 
             // Send email notification
             try {
-                const response = await mailSender(
+                 await mailSender(
                     user.email,
                     'Password Updated Successfully',
-                    passwordUpdated(user.email, user.firstName)
+                    passwordUpdate(user.email, user.firstName)
                 );
                 console.log("Password update email sent successfully");
             } catch (emailError) {
