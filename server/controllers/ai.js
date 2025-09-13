@@ -18,7 +18,9 @@ exports.chatWithAI = async (req, res) => {
     console.log("User:", req.user);
     
     const { message, conversationHistory = [] } = req.body;
-
+    console.log("Message : ",message);
+    console.log("Convo History : ", conversationHistory);
+    
     if (!message || message.trim() === "") {
       return res.status(400).json({ 
         success: false, 

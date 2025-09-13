@@ -49,6 +49,9 @@ export const chatWithAI = (message, conversationHistory = []) => {
 
       console.log("Chat API call with token:", token?.substring(0, 20) + "...");
 
+      console.log("Message : ", message);
+      console.log("Convo History : ", conversationHistory);
+
       if (!token) {
         throw new Error("No authentication token found");
       }
