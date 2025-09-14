@@ -1,6 +1,6 @@
 # EduElevate 🚀 - AI-Powered EdTech Platform
 
-An intelligent e-learning platform built with the MERN stack that revolutionizes online education through AI integration and comprehensive analytics.
+An intelligent e-learning platform built with the MERN stack that revolutionizes online education through AI integration, comprehensive analytics, and automated communication.
 
 ## 🌐 Live Demo
 **[Visit EduElevate](https://eduelevate-ai.vercel.app/)**
@@ -28,6 +28,7 @@ An intelligent e-learning platform built with the MERN stack that revolutionizes
 - 🤖 **Personal AI Study Assistant**
 - ⭐ Smart rating and review system
 - 📱 Responsive video player with resume functionality
+- 📧 **Automated Email Notifications**
 
 ### For Instructors
 - 📈 **Advanced Analytics Dashboard**
@@ -39,6 +40,15 @@ An intelligent e-learning platform built with the MERN stack that revolutionizes
 - 💰 Revenue tracking and analytics
 - 📋 Student enrollment monitoring
 - 🔍 Performance insights for course optimization
+
+### 📧 Automated Email System
+- **Welcome Emails**: Automated welcome messages for new users
+- **Course Enrollment Confirmation**: Instant enrollment confirmations with course details
+- **Payment Success Notifications**: Professional payment receipts and course access details
+- **Email Verification**: Secure account verification process
+- **Password Reset**: Secure password reset functionality with email verification
+- **Security Alerts**: Automated notifications for password updates and account changes
+- **Custom Email Templates**: Professional, responsive email designs
 
 ### AI-Enhanced Learning Experience
 - **Personalized Recommendations**: AI suggests relevant courses based on user interests
@@ -57,12 +67,14 @@ An intelligent e-learning platform built with the MERN stack that revolutionizes
 - **Node.js & Express.js** for robust server architecture
 - **MongoDB** for scalable data storage
 - **AI API Integration** for intelligent features
+- **NodeMailer** for automated email services
 
 ### Additional Technologies
 - **JWT Authentication** for secure user sessions
 - **Cloudinary** for optimized media storage
 - **Razorpay** for seamless payment processing
 - **AI/ML APIs** for intelligent features
+- **Email Templates** for professional communication
 
 ## 🚀 Getting Started
 
@@ -93,6 +105,9 @@ CLOUDINARY_API_SECRET=your_cloudinary_secret
 RAZORPAY_KEY=your_razorpay_key_id
 RAZORPAY_SECRET=your_razorpay_secret
 AI_API_KEY=your_ai_service_api_key
+MAIL_HOST=your_email_service_host
+MAIL_USER=your_email_username
+MAIL_PASS=your_email_password
 ```
 
 4. **Run the application**
@@ -104,6 +119,21 @@ npm run dev
 cd src
 npm start
 ```
+
+## 📧 Email Features
+
+### Automated Email Templates
+- **Course Enrollment**: Professional confirmation emails with course details
+- **Payment Success**: Detailed payment receipts with transaction information
+- **Email Verification**: Secure OTP-based account verification
+- **Password Reset**: Secure password reset links with expiration
+- **Security Updates**: Notifications for password changes and account updates
+
+### Email Service Integration
+- **NodeMailer Integration**: Reliable email delivery system
+- **Responsive Templates**: Mobile-friendly email designs
+- **Error Handling**: Robust email delivery with fallback mechanisms
+- **Template Customization**: Easy-to-modify email templates
 
 ## 📊 Dashboard Features
 
@@ -122,6 +152,7 @@ npm start
 ## 🎯 Major Project Highlights
 
 - **AI-First Approach**: Every feature is enhanced with artificial intelligence
+- **Automated Communication**: Professional email system for all user interactions
 - **Scalable Architecture**: Built to handle thousands of concurrent users
 - **Real-time Analytics**: Live updates on student engagement and revenue
 - **Mobile-Responsive**: Seamless experience across all devices
