@@ -99,7 +99,7 @@ exports.verifyPayment = async (req, res) => {
 
     if (expectedSignature === razorpay_signature) {
         try {
-            await enrollStudents(courses, userId, res)
+            await enrollStudents(courses, userId)
             return res.status(200).json({ success: true, message: "Payment verified successfully" })
         } catch (error) {
             console.error("Error in payment verification:", error)
@@ -143,12 +143,9 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
 }
 
 // enroll the student in the courses
-const enrollStudents = async (courses, userId, res) => {
+const enrollStudents = async (courses, userId) => {
     if (!courses || !userId) {
-        return res.status(400).json({
-            success: false,
-            message: "Courses or userId missing"
-        })
+        throw new Error("Courses or userId missing")
     }
 
     for (const courseId of courses) {
@@ -161,10 +158,7 @@ const enrollStudents = async (courses, userId, res) => {
             )
 
             if (!enrolledCourse) {
-                return res.status(400).json({
-                    success: false,
-                    message: `Course not found for id ${courseId}`
-                })
+                throw new Error(`Course not found for id ${courseId}`)
             }
 
             console.log("Updated Course: ", enrolledCourse)
@@ -203,7 +197,7 @@ const enrollStudents = async (courses, userId, res) => {
             console.log("Email Response: ", emailResponse)
         } catch (error) {
             console.error("Error enrolling student in course:", error)
-            return res.status(400).json({ success: false, message: error.message })
+            throw error
         }
     }
 }

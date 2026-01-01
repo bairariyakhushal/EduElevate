@@ -67,7 +67,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
       
       <body>
           <div class="container">
-              <a href="https://EduElevate-edtech-project.vercel.app"><img class="logo" src="https://res.cloudinary.com/dzkaggnlf/image/upload/v1753640145/black1_ydxyum.png"
+              <a href="https://eduelevate-ai.vercel.app/"><img class="logo" src="https://res.cloudinary.com/dzkaggnlf/image/upload/v1753640145/black1_ydxyum.png"
                       alt="EduElevate Logo"></a>
               <div class="message">Course Payment Confirmation</div>
               <div class="body">

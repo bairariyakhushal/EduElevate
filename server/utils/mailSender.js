@@ -38,7 +38,7 @@ const mailSender = async (email, title, body) => {
 
         // Send email with provided details
         let info = await transporter.sendMail({
-            from: 'EduElevate || Khushal Bairariya',
+            from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_EMAIL}>`,
             to: `${email}`,
             subject: `${title}`,
             html: `${body}`
